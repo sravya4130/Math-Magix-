@@ -5,15 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MathMagix Calculator</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
+  <script src="https://unpkg.com/mathsteps/dist/mathsteps.min.js"></script>
 </head>
 <body>
-  <h1>🧮 MathMagix</h1>
+  <h1>🌈 MathMagix</h1>
+
   <div class="calculator">
-    <textarea id="input" placeholder="Enter expression (e.g. 2x^2, integrate x^2, diff x^2)"></textarea>
-    <button onclick="calculate()">Calculate</button>
+    <input type="text" id="input" placeholder="Type: solve 2x + 3 = 7 or 4 + 5 * 2" />
+
+    <div class="button-row">
+      <button onclick="addToInput('7')">7</button>
+      <button onclick="addToInput('8')">8</button>
+      <button onclick="addToInput('9')">9</button>
+      <button onclick="addToInput('+')">+</button>
+    </div>
+    <div class="button-row">
+      <button onclick="addToInput('4')">4</button>
+      <button onclick="addToInput('5')">5</button>
+      <button onclick="addToInput('6')">6</button>
+      <button onclick="addToInput('-')">−</button>
+    </div>
+    <div class="button-row">
+      <button onclick="addToInput('1')">1</button>
+      <button onclick="addToInput('2')">2</button>
+      <button onclick="addToInput('3')">3</button>
+      <button onclick="addToInput('*')">×</button>
+    </div>
+    <div class="button-row">
+      <button onclick="addToInput('0')">0</button>
+      <button onclick="addToInput('.')">.</button>
+      <button onclick="clearInput()">C</button>
+      <button onclick="addToInput('/')">÷</button>
+    </div>
+
+    <button class="solve-btn" onclick="calculate()">➤ Solve</button>
+
     <div class="output" id="output"></div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
