@@ -1,132 +1,26 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>MathMagix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Calligraphy Font -->
+  <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet" />
-
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: url('https://images.unsplash.com/photo-1584117095846-b9d0f015c8b1') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-    }
-
-    h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 4rem;
-      text-align: center;
-      margin-top: 40px;
-      text-shadow: 2px 2px 10px black;
-    }
-
-    .sidebar {
-      height: 100%;
-      width: 220px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding-top: 60px;
-      transition: 0.3s;
-    }
-
-    .sidebar a {
-      padding: 12px 24px;
-      text-decoration: none;
-      font-size: 18px;
-      color: #fff;
-      display: block;
-    }
-
-    .sidebar a:hover {
-      background-color: #575757;
-    }
-
-    .main {
-      margin-left: 240px;
-      padding: 20px;
-    }
-
-    .calculator {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 400px;
-      margin: auto;
-      backdrop-filter: blur(8px);
-    }
-
-    input {
-      width: 100%;
-      padding: 15px;
-      font-size: 1.2rem;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      margin-bottom: 20px;
-    }
-
-    .buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-
-    button {
-      padding: 15px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 10px;
-      background: #ffffff;
-      color: black;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #ffd6ff;
-    }
-
-    #output {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    /* About Us page */
-    .about {
-      max-width: 700px;
-      margin: 60px auto;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      backdrop-filter: blur(10px);
-    }
-  </style>
 </head>
-
 <body>
   <div class="sidebar">
-    <a href="#home">Home</a>
-    <a href="#about">About Us</a>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
   </div>
 
   <div class="main">
-    <h1 id="home">MathMagix</h1>
+    <h1>MathMagix</h1>
 
     <div class="calculator">
-      <input type="text" id="input" placeholder="0" readonly />
+      <button class="clear-btn" onclick="clearInput()">C</button>
+      <input type="text" id="input" placeholder="0" oninput="liveCalculate()" />
+      <div id="output"></div>
+
       <div class="buttons">
         <button onclick="press('7')">7</button>
         <button onclick="press('8')">8</button>
@@ -142,44 +36,14 @@
         <button onclick="press('-')">−</button>
         <button onclick="press('0')">0</button>
         <button onclick="press('.')">.</button>
-        <button onclick="clearInput()">C</button>
         <button onclick="press('+')">+</button>
-        <button onclick="calculate()" style="grid-column: span 4;">=</button>
+        <button onclick="press('(')">(</button>
+        <button onclick="press(')')">)</button>
+        <button onclick="press('%')">%</button>
       </div>
-      <div id="output"></div>
-    </div>
-
-    <div class="about" id="about">
-      <h2>About Us</h2>
-      <p>
-        Hi! I’m Sravya, the creator of <strong>MathMagix</strong> — a fun and smart calculator designed for students who want more than just numbers. I built this project with passion and creativity to help people visualize math better. Stay tuned for more features like voice input, step solving, and graphing!
-      </p>
     </div>
   </div>
 
-  <script>
-    let expression = "";
-
-    function press(val) {
-      expression += val;
-      document.getElementById("input").value = expression;
-    }
-
-    function clearInput() {
-      expression = "";
-      document.getElementById("input").value = "";
-      document.getElementById("output").innerText = "";
-    }
-
-    function calculate() {
-      try {
-        const result = eval(expression);
-        document.getElementById("output").innerHTML = "<b>Result:</b> " + result;
-        expression = result.toString(); // so user can continue calculation
-      } catch (e) {
-        document.getElementById("output").innerHTML = "<b>Error:</b> Invalid expression";
-      }
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
