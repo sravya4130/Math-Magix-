@@ -1,33 +1,17 @@
-let expression = "";
-
-function press(val) {
-  expression += val;
-  document.getElementById("input").value = expression;
-  liveCalculate();
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+}
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
 }
 
-function clearInput() {
-  expression = "";
-  document.getElementById("input").value = "";
-  document.getElementById("output").innerHTML = "";
-}
-
-function liveCalculate() {
-  const input = document.getElementById("input").value;
-  expression = input; // keep updated for pressing buttons
+// Basic Calculator
+function calculate() {
+  let input = document.getElementById("calc-input").value;
   try {
-    const result = eval(input);
-    document.getElementById("output").innerHTML = "<b>Result:</b> " + result;
+    let result = eval(input); // simple eval (can improve with math.js later)
+    document.getElementById("calc-result").innerText = "= " + result;
   } catch {
-    document.getElementById("output").innerHTML = "<b>Result:</b> ...";
-  }
-}
-
-function toggleMenu() {
-  const sidebar = document.getElementById("sidebar");
-  if (sidebar.style.width === "250px") {
-    sidebar.style.width = "0";
-  } else {
-    sidebar.style.width = "250px";
+    document.getElementById("calc-result").innerText = "Error";
   }
 }
