@@ -1,125 +1,67 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #1e1e2f, #2c2c54, #3e3e80);
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top left, #1e0033, #0d001a 70%);
   color: white;
   min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
 
-h1 {
-  font-family: 'Great Vibes', cursive;
-  text-align: center;
-  font-size: 3.5rem;
-  margin-top: 30px;
-  color: #fff;
-  text-shadow: 2px 2px 10px black;
+/* Subtle stars */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: transparent url("https://www.transparenttextures.com/patterns/stardust.png") repeat;
+  opacity: 0.3;
+  animation: twinkle 40s linear infinite;
+  z-index: -1;
 }
 
-/* Hamburger Menu */
-.hamburger {
-  font-size: 30px;
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1000;
-  cursor: pointer;
-  color: white;
+@keyframes twinkle {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 1000px; }
 }
 
-/* Sliding Sidebar */
+/* Sidebar */
 .sidebar {
   height: 100%;
   width: 0;
   position: fixed;
+  z-index: 2;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0,0,0,0.9);
   overflow-x: hidden;
-  transition: 0.3s;
+  transition: 0.4s;
   padding-top: 60px;
-  z-index: 999;
 }
 
 .sidebar a {
-  padding: 10px 30px;
-  display: block;
-  font-size: 18px;
-  color: white;
+  padding: 12px 20px;
   text-decoration: none;
+  font-size: 18px;
+  color: #f1f1f1;
+  display: block;
+  transition: 0.3s;
 }
 
 .sidebar a:hover {
-  background-color: #444;
+  background: #444;
 }
 
-.main {
-  padding: 30px;
-  margin-left: 0;
-}
-
-.calculator {
-  max-width: 400px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  border-radius: 20px;
-  margin: auto;
-  box-shadow: 0 0 10px #00000088;
-  backdrop-filter: blur(8px);
-}
-
-input {
-  width: 100%;
-  padding: 15px;
+.openbtn {
   font-size: 20px;
-  border-radius: 10px;
-  border: none;
-  margin-bottom: 10px;
-  outline: none;
-  background-color: white;
-  color: black;
-}
-
-.clear-btn {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 12px;
-  font-size: 18px;
-  background: #ff4b5c;
+  cursor: pointer;
+  background-color: #222;
   color: white;
+  padding: 10px 15px;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  margin: 10px;
 }
 
-.clear-btn:hover {
-  background: #ff808b;
-}
-
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-
-button {
-  padding: 15px;
-  font-size: 18px;
-  background: white;
-  color: #333;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #ffe0f5;
-}
-
-#output {
-  margin-top: 10px;
-  font-size: 18px;
-  background: rgba(0,0,0,0.2);
-  padding: 12px;
-  border-radius: 8px;
-  min-height: 40px;
+.content {
+  padding: 20px;
+  text-align: center;
 }
