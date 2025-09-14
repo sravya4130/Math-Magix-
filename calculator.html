@@ -2,101 +2,137 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Scientific Calculator - MathMagix</title>
+  <title>MathMagix Calculator</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: radial-gradient(circle at top left, #0d001a, #1e0033 70%);
-      background-image: url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80");
+      background: url('https://www.pixelstalk.net/wp-content/uploads/images6/Galaxy-Background-Free-Download.jpg') no-repeat center center fixed;
       background-size: cover;
-      background-attachment: fixed;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      color: white;
     }
+
     .calculator {
       width: 420px;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0, 0, 0, 0.85);
       border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 0 30px rgba(255,255,255,0.2);
+      padding: 20px;
+      box-shadow: 0 0 30px #9d4edd;
     }
+
     .display {
-      height: 80px;
-      background: black;
-      color: lime;
-      font-size: 34px;
+      width: 100%;
+      height: 70px;
+      font-size: 28px;
       text-align: right;
-      padding: 15px;
+      padding: 10px;
+      border: none;
       border-radius: 10px;
+      background: #1a1a2e;
+      color: #fff;
       margin-bottom: 20px;
-      overflow-x: auto;
+      box-shadow: inset 0 0 10px #9d4edd;
     }
+
     .buttons {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 12px;
     }
+
     button {
-      font-size: 20px;
       padding: 18px;
+      font-size: 18px;
+      font-weight: bold;
       border: none;
-      border-radius: 10px;
-      background: #222;
+      border-radius: 12px;
+      background: #3a0ca3;
       color: white;
       cursor: pointer;
+      box-shadow: 0 4px #1a1a2e;
       transition: 0.2s;
     }
-    button:hover {
-      background: #444;
+
+    button:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px #1a1a2e;
     }
-    .equal {
+
+    button.operator {
+      background: #ff6d00;
+    }
+
+    button.equal {
+      background: #4cc9f0;
       grid-column: span 2;
-      background: darkmagenta;
     }
-    .clear {
-      background: crimson;
+
+    button.clear {
+      background: #d00000;
+      grid-column: span 2;
     }
   </style>
 </head>
 <body>
   <div class="calculator">
-    <div id="display" class="display">0</div>
+    <input type="text" id="display" class="display" disabled>
     <div class="buttons">
-      <button onclick="clearDisplay()" class="clear">C</button>
-      <button onclick="appendValue('(')">(</button>
-      <button onclick="appendValue(')')">)</button>
-      <button onclick="appendValue('^')">^</button>
-      <button onclick="appendValue('%')">%</button>
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button class="operator" onclick="append('/')">÷</button>
+      <button onclick="append('sqrt(')">√</button>
 
-      <button onclick="appendValue('sin(')">sin</button>
-      <button onclick="appendValue('cos(')">cos</button>
-      <button onclick="appendValue('tan(')">tan</button>
-      <button onclick="appendValue('log(')">log</button>
-      <button onclick="appendValue('ln(')">ln</button>
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button class="operator" onclick="append('*')">×</button>
+      <button onclick="append('^')">^</button>
 
-      <button onclick="appendValue('π')">π</button>
-      <button onclick="appendValue('e')">e</button>
-      <button onclick="appendValue('sqrt(')">√</button>
-      <button onclick="appendValue('/')">÷</button>
-      <button onclick="appendValue('*')">×</button>
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button class="operator" onclick="append('-')">−</button>
+      <button onclick="append('pi')">π</button>
 
-      <button onclick="appendValue('7')">7</button>
-      <button onclick="appendValue('8')">8</button>
-      <button onclick="appendValue('9')">9</button>
-      <button onclick="appendValue('-')">−</button>
-      <button onclick="appendValue('+')">+</button>
+      <button onclick="append('0')">0</button>
+      <button onclick="append('.')">.</button>
+      <button class="equal" onclick="calculate()">=</button>
+      <button class="operator" onclick="append('+')">+</button>
+      <button onclick="append('e')">e</button>
 
-      <button onclick="appendValue('4')">4</button>
-      <button onclick="appendValue('5')">5</button>
-      <button onclick="appendValue('6')">6</button>
-      <button onclick="appendValue('.')">.</button>
-      <button onclick="appendValue('^2')">x²</button>
+      <button onclick="append('sin(')">sin</button>
+      <button onclick="append('cos(')">cos</button>
+      <button onclick="append('tan(')">tan</button>
+      <button onclick="append('log(')">log</button>
+      <button onclick="append('ln(')">ln</button>
 
-      <button onclick="appendValue('1')">1</button>
-      <button onclick="appendValue('2')">2</button>
-      <button onclick="appendValue('3')">3</button>
-      <button onclick="appendV
+      <button class="clear" onclick="clearDisplay()">C</button>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+  <script>
+    let display = document.getElementById("display");
+
+    function append(value) {
+      display.value += value;
+    }
+
+    function clearDisplay() {
+      display.value = "";
+    }
+
+    function calculate() {
+      try {
+        display.value = math.evaluate(display.value);
+      } catch {
+        display.value = "Error";
+      }
+    }
+  </script>
+</body>
+</html>
