@@ -4,13 +4,38 @@
   <meta charset="UTF-8">
   <title>MathMagix Home</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .home-box {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 25px #9d4edd;
+      width: 60%;
+      margin: auto;
+      margin-top: 15%;
+    }
+    .home-box h1 {
+      font-size: 42px;
+      color: #ffffff;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px #9d4edd;
+    }
+    .home-box p {
+      font-size: 20px;
+      color: #f1f1f1;
+    }
+  </style>
   <script>
     function openNav() { document.getElementById("mySidebar").style.width = "250px"; }
     function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
   </script>
 </head>
 <body>
+  <!-- Sidebar Button -->
   <button class="openbtn" onclick="openNav()">☰ Menu</button>
+
+  <!-- Sidebar -->
   <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" onclick="closeNav()">✖ Close</a>
     <a href="index.html">Home</a>
@@ -21,9 +46,10 @@
     <a href="about.html">About Us</a>
   </div>
 
-  <div class="content">
+  <!-- Centered Welcome Box -->
+  <div class="home-box">
     <h1>🌌 Welcome to MathMagix</h1>
-    <p>Your all-in-one smart calculator for every kind of math ✨</p>
+    <p>Your all-in-one magical calculator for every kind of math ✨</p>
   </div>
 </body>
 </html>
