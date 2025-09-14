@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Integration - MathMagix</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+  <script>
+    function integrate() {
+      let expr = document.getElementById("int-input").value;
+      try {
+        // Math.js doesn't fully integrate, so we'll mimic with simplify for now
+        document.getElementById("int-result").innerText = "∫(" + expr + ") dx = [symbolic integration needs advanced lib]";
+      } catch {
+        document.getElementById("int-result").innerText = "Error";
+      }
+    }
+  </script>
+</head>
+<body>
+  <button class="openbtn" onclick="openNav()">☰ Menu</button>
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" onclick="closeNav()">✖ Close</a>
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="differentiation.html">Differentiation</a>
+    <a href="integration.html">Integration</a>
+    <a href="about.html">About Us</a>
+  </div>
+
+  <div class="content">
+    <h1>∫ Integration</h1>
+    <input id="int-input" placeholder="Enter function, e.g. x^2">
+    <button onclick="integrate()">Integrate</button>
+    <p id="int-result"></p>
+  </div>
+</body>
+</html>
