@@ -4,23 +4,116 @@
   <meta charset="UTF-8">
   <title>Calculator - MathMagix</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e0033, #0d001a 70%);
+      background-image: url("https://i.ibb.co/8b7qM7y/galaxy.jpg"); 
+      background-size: cover;
+      background-attachment: fixed;
+      color: white;
+      min-height: 100vh;
+    }
+    .calculator {
+      width: 320px;
+      margin: 60px auto;
+      background: rgba(0,0,0,0.85);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 25px rgba(255,255,255,0.2);
+    }
+    .display {
+      height: 60px;
+      background: black;
+      color: lime;
+      font-size: 28px;
+      text-align: right;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      overflow-x: auto;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    button {
+      font-size: 20px;
+      padding: 20px;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #444;
+    }
+    .equal {
+      grid-column: span 2;
+      background: darkmagenta;
+    }
+    .clear {
+      background: crimson;
+    }
+  </style>
 </head>
 <body>
-  <button class="openbtn" onclick="openNav()">☰ Menu</button>
-  <div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" onclick="closeNav()">✖ Close</a>
-    <a href="index.html">Home</a>
-    <a href="calculator.html">Calculator</a>
-    <a href="differentiation.html">Differentiation</a>
-    <a href="integration.html">Integration</a>
-    <a href="about.html">About Us</a>
+  <div class="calculator">
+    <div id="display" class="display">0</div>
+    <div class="buttons">
+      <button onclick="clearDisplay()" class="clear">C</button>
+      <button onclick="appendValue('(')">(</button>
+      <button onclick="appendValue(')')">)</button>
+      <button onclick="appendValue('/')">÷</button>
+      
+      <button onclick="appendValue('7')">7</button>
+      <button onclick="appendValue('8')">8</button>
+      <button onclick="appendValue('9')">9</button>
+      <button onclick="appendValue('*')">×</button>
+      
+      <button onclick="appendValue('4')">4</button>
+      <button onclick="appendValue('5')">5</button>
+      <button onclick="appendValue('6')">6</button>
+      <button onclick="appendValue('-')">−</button>
+      
+      <button onclick="appendValue('1')">1</button>
+      <button onclick="appendValue('2')">2</button>
+      <button onclick="appendValue('3')">3</button>
+      <button onclick="appendValue('+')">+</button>
+      
+      <button onclick="appendValue('0')">0</button>
+      <button onclick="appendValue('.')">.</button>
+      <button onclick="calculateResult()" class="equal">=</button>
+    </div>
   </div>
 
-  <div class="content">
-    <h1>🧮 Calculator</h1>
-    <input id="calc-input" onkeyup="calculate()" placeholder="Type expression e.g. 2+3*4">
-    <p id="calc-result"></p>
-  </div>
+  <script>
+    let display = document.getElementById("display");
+
+    function appendValue(val) {
+      if (display.innerText === "0" || display.innerText === "Error") {
+        display.innerText = val;
+      } else {
+        display.innerText += val;
+      }
+    }
+
+    function clearDisplay() {
+      display.innerText = "0";
+    }
+
+    function calculateResult() {
+      try {
+        let result = eval(display.innerText.replace(/÷/g,"/").replace(/×/g,"*"));
+        display.innerText = result;
+      } catch {
+        display.innerText = "Error";
+      }
+    }
+  </script>
 </body>
 </html>
