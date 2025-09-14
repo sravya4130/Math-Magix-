@@ -1,54 +1,142 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>MathMagix</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet" />
-</head>
-<body>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MathMagix — Finished</title>
 
-  <!-- Hamburger Button -->
-  <div class="hamburger" onclick="toggleMenu()">☰</div>
+  <!-- External libraries (CDNs) -->
+  <!-- math.js for numeric eval -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.9.0/math.min.js" integrity="" crossorigin="anonymous"></script>
 
-  <!-- Sliding Sidebar -->
-  <div class="sidebar" id="sidebar">
-    <a href="index.html">Home</a>
-    <a href="about.html">About Us</a>
-  </div>
+  <!-- nerdamer for symbolic diff/integral -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nerdamer/1.1.14/nerdamer.core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nerdamer/1.1.14/Algebra.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nerdamer/1.1.14/Calculus.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nerdamer/1.1.14/Solve.min.js"></script>
 
-  <div class="main">
-    <h1>MathMagix</h1>
+  <!-- mathsteps for showing algebra steps -->
+  <script src="https://unpkg.com/mathsteps@0.6.0/lib/browser/mathsteps.min.js"></script>
 
-    <div class="calculator">
-      <button class="clear-btn" onclick="clearInput()">C</button>
-      <input type="text" id="input" placeholder="0" oninput="liveCalculate()" />
-      <div id="output"></div>
+  <!-- Plotly for graphing -->
+  <script src="https://cdn.plot.ly/plotly-2.25.2.min.js"></script>
 
-      <div class="buttons">
-        <button onclick="press('7')">7</button>
-        <button onclick="press('8')">8</button>
-        <button onclick="press('9')">9</button>
-        <button onclick="press('/')">÷</button>
-        <button onclick="press('4')">4</button>
-        <button onclick="press('5')">5</button>
-        <button onclick="press('6')">6</button>
-        <button onclick="press('*')">×</button>
-        <button onclick="press('1')">1</button>
-        <button onclick="press('2')">2</button>
-        <button onclick="press('3')">3</button>
-        <button onclick="press('-')">−</button>
-        <button onclick="press('0')">0</button>
-        <button onclick="press('.')">.</button>
-        <button onclick="press('+')">+</button>
-        <button onclick="press('(')">(</button>
-        <button onclick="press(')')">)</button>
-        <button onclick="press('%')">%</button>
-      </div>
-    </div>
-  </div>
+  <!-- MathJax for nice math rendering -->
+  <script>
+    window.MathJax = {
+      tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
+      svg: {fontCache: 'global'}
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 
-  <script src="script.js"></script>
-</body>
-</html>
+  <style>
+    /* IMPORTANT: I intentionally do NOT override your background.
+       Do not add body { background: ... } here if you want to keep your existing background. */
+
+    :root{
+      --accent:#ff2d95;
+      --panel-bg: rgba(0,0,0,0.55);
+      --glass: rgba(255,255,255,0.03);
+      --text: #ffffff;
+      --muted: #cfcfcf;
+      --radius:14px;
+    }
+
+    html,body{height:100%; margin:0; font-family: Inter, system-ui, Arial; color:var(--text);}
+    /* page container */
+    .app {
+      min-height:100vh;
+      display:flex;
+      gap:24px;
+      align-items:flex-start;
+      padding:28px;
+      box-sizing:border-box;
+      backdrop-filter: blur(2px);
+    }
+
+    /* Sliding sidebar */
+    .hamburger{
+      position:fixed;
+      left:18px;
+      top:18px;
+      z-index:999;
+      width:48px;
+      height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--glass);
+      border-radius:10px;
+      cursor:pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    }
+    .hamburger span{
+      width:26px; height:2px; background:var(--text); display:block; border-radius:2px; position:relative;
+    }
+    .hamburger span:before, .hamburger span:after{
+      content:""; position:absolute; left:0; width:100%; height:100%; background:var(--text); border-radius:2px;
+    }
+    .hamburger span:before{ top:-8px }
+    .hamburger span:after{ top:8px }
+
+    .sidebar{
+      position:fixed;
+      left: -320px;
+      top:0;
+      bottom:0;
+      width:320px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.65), rgba(0,0,0,0.5));
+      padding:28px;
+      transition: left .32s cubic-bezier(.2,.9,.3,1);
+      z-index:998;
+      box-shadow: 6px 0 30px rgba(0,0,0,0.5);
+      overflow:auto;
+    }
+    .sidebar.open{ left:0; }
+
+    .logo{
+      font-family: 'Brush Script MT', cursive;
+      font-size:28px;
+      color:var(--accent);
+      margin-bottom:10px;
+    }
+    .nav-item{ color:var(--muted); padding:10px 0; cursor:pointer;}
+    .nav-item:hover{ color:#fff; }
+
+    /* clear button pinned at top */
+    .top-controls{
+      position:fixed;
+      right:18px;
+      top:18px;
+      display:flex;
+      gap:10px;
+      z-index:999;
+    }
+    .btn{
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+
+    /* main panel */
+    .panel{
+      flex:1;
+      background: rgba(0,0,0,0.35);
+      border-radius: var(--radius);
+      padding:22px;
+      min-width:360px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.55);
+      margin-left:360px; /* leave space visually for sidebar even when closed */
+    }
+
+    .row{ display:flex; gap:14px; align-items:flex-start; }
+    .col{ flex:1; min-width:0; }
+
+    label{ display
