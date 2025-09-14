@@ -1,103 +1,113 @@
-body {
-  margin: 0;
+/* ---------- Galaxy gradient (full page) ---------- */
+:root{
+  --star-color: rgba(255,255,255,0.85);
+  --soft-star: rgba(255,255,255,0.18);
+}
+
+html,body{
+  height:100%;
+  margin:0;
   font-family: Arial, sans-serif;
-  height: 100vh;
-  background: radial-gradient(circle at top left, #1a0033, #0d001a 30%, #000000 70%);
-  background-attachment: fixed;
-  background-size: cover;
-  color: white;
-}
-
-}
-
-.sidebar {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background: rgba(0,0,0,0.9);
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
-}
-
-.sidebar a {
-  padding: 12px 20px;
-  text-decoration: none;
-  font-size: 20px;
-  color: #f1f1f1;
-  display: block;
-  transition: 0.3s;
-}
-
-.sidebar a:hover {
-  background: #9d4edd;
-}
-
-.openbtn {
-  font-size: 20px;
-  cursor: pointer;
-  background: #9d4edd;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  margin: 10px;
-  border-radius: 8px;
-}
-
-.content {
-  margin: 20px;
-  padding: 20px;
-}
-
-.calculator {
-  width: 440px;
-  background: rgba(0, 0, 0, 0.9);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 0 40px #9d4edd;
-  margin: auto;
-}
-
-.display {
-  width: 100%;
-  height: 80px;
-  font-size: 30px;
-  text-align: right;
-  padding: 15px;
-  border: none;
-  border-radius: 10px;
-  background: #1a1a2e;
+  background: radial-gradient(1200px 600px at 10% 10%, #2b0038 0%, #170021 25%, #0a0010 55%, #000000 100%);
   color: #fff;
-  margin-bottom: 20px;
-  box-shadow: inset 0 0 12px #9d4edd;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+/* ---------- subtle nebula glow layers ---------- */
+.background-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+}
+.background-layer::before,
+.background-layer::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px 300px at 75% 20%, rgba(157,78,237,0.08), transparent 20%),
+              radial-gradient(500px 260px at 20% 75%, rgba(72,61,139,0.06), transparent 18%);
+  mix-blend-mode: screen;
+  opacity: 0.95;
+  filter: blur(30px);
 }
 
-button {
-  padding: 20px;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 12px;
-  background: #3a0ca3;
-  color: white;
-  cursor: pointer;
-  box-shadow: 0 4px #1a1a2e;
-  transition: 0.2s;
+/* ---------- star field (many tiny stars) ---------- */
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 10% 20%, var(--star-color) 0.8px, transparent 0.9px),
+    radial-gradient(circle at 30% 40%, var(--soft-star) 0.7px, transparent 0.8px),
+    radial-gradient(circle at 50% 10%, var(--star-color) 0.9px, transparent 1px),
+    radial-gradient(circle at 70% 70%, var(--soft-star) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 85% 30%, var(--star-color) 0.8px, transparent 0.9px);
+  background-size: 1000px 1000px, 800px 800px, 1200px 1200px, 700px 700px, 900px 900px;
+  opacity: 0.85;
+  animation: drift 30s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.02));
 }
 
-button:active {
-  transform: scale(0.95);
+@keyframes drift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  to   { background-position: -400px 200px, 300px -200px, -200px 400px, 250px 250px, -300px -150px; }
 }
 
-button.operator { background: #ff6d00; }
-button.equal { background: #4cc9f0; grid-column: span 2; }
-button.clear { background: #d00000; grid-column: span 2; }
+/* ---------- twinkling layer for subtle flicker ---------- */
+.twinkle {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 12% 15%, rgba(255,255,255,0.22) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 62% 45%, rgba(255,255,255,0.14) 0.5px, transparent 0.6px),
+    radial-gradient(circle at 30% 80%, rgba(255,255,255,0.18) 0.6px, transparent 0.7px);
+  background-size: 1400px 1400px;
+  opacity: 0.28;
+  animation: twinkle 6s linear infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.18; transform: scale(1); }
+  50% { opacity: 0.38; transform: scale(1.02); }
+  100% { opacity: 0.18; transform: scale(1); }
+}
+
+/* ---------- shooting star (created via JS) ---------- */
+.shooting-star {
+  position: fixed;
+  top: -10px;
+  left: -10px;
+  width: 2px;
+  height: 120px;
+  background: linear-gradient( to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.0) 60% );
+  transform: rotate(25deg) translateX(-100vw);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(0.6px) drop-shadow(0 0 6px rgba(255,255,255,0.6));
+}
+
+/* ---------- make sure content sits above background ---------- */
+.site-root {
+  position: relative;
+  z-index: 1;
+}
+
+/* Sidebar translucency so galaxy shows behind it */
+.sidebar {
+  background: linear-gradient(180deg, rgba(10,6,20,0.70), rgba(10,6,20,0.55));
+  backdrop-filter: blur(6px);
+}
+
+/* small responsive tweaks (optional) */
+@media (max-width:760px){
+  .home-content h1 { font-size:36px; }
+  .calculator { width: 92%; }
+}
