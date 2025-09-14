@@ -1,41 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>MathMagix Home</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .home-content {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh; /* full screen */
-      text-align: center;
-      flex-direction: column;
-      color: #fff;
-      text-shadow: 0 0 12px #9d4edd;
-    }
-    .home-content h1 {
-      font-size: 50px;
-      margin-bottom: 20px;
-    }
-    .home-content p {
-      font-size: 22px;
-      max-width: 700px;
-    }
-  </style>
-  <script>
-    function openNav() { document.getElementById("mySidebar").style.width = "250px"; }
-    function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-  </script>
+<meta charset="UTF-8">
+<title>MathMagix Home</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Sidebar */
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background: rgba(10,6,20,0.75);
+    backdrop-filter: blur(6px);
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  .sidebar a {
+    padding: 12px 20px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #f1f1f1;
+    display: block;
+    transition: 0.3s;
+  }
+  .sidebar a:hover { background: #9d4edd; }
+
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background: #9d4edd;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    margin: 10px;
+    border-radius: 8px;
+  }
+
+  /* Center content */
+  .home-content {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    text-shadow: 0 0 12px #9d4edd;
+  }
+  .home-content h1 { font-size: 50px; margin-bottom: 20px; }
+  .home-content p { font-size: 22px; max-width: 700px; }
+</style>
+<script>
+  function toggleNav() {
+    const sb = document.getElementById("mySidebar");
+    sb.style.width = (sb.style.width === "250px") ? "0" : "250px";
+  }
+</script>
 </head>
 <body>
-  <!-- Sidebar Button -->
-  <button class="openbtn" onclick="openNav()">☰ Menu</button>
+  <!-- Sliding Sidebar Button -->
+  <button class="openbtn" onclick="toggleNav()">☰ Menu</button>
 
-  <!-- Sidebar -->
+  <!-- Sliding Sidebar -->
   <div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" onclick="closeNav()">✖ Close</a>
     <a href="index.html">Home</a>
     <a href="calculator.html">Calculator</a>
     <a href="differentiation.html">Differentiation</a>
@@ -49,5 +82,10 @@
     <h1>🌌 Welcome to MathMagix</h1>
     <p>Explore the galaxy of mathematics – from simple sums to advanced calculus ✨</p>
   </div>
+
+  <!-- Include Galaxy + Stars JS (from previous snippet) -->
+  <script>
+    // Add your galaxy + stars + shooting star code here (same as previous)
+  </script>
 </body>
 </html>
