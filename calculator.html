@@ -16,25 +16,25 @@
     }
 
     .calculator {
-      width: 420px;
-      background: rgba(0, 0, 0, 0.85);
+      width: 440px;
+      background: rgba(0, 0, 0, 0.9);
       border-radius: 20px;
       padding: 20px;
-      box-shadow: 0 0 30px #9d4edd;
+      box-shadow: 0 0 40px #9d4edd;
     }
 
     .display {
       width: 100%;
-      height: 70px;
-      font-size: 28px;
+      height: 80px;
+      font-size: 30px;
       text-align: right;
-      padding: 10px;
+      padding: 15px;
       border: none;
       border-radius: 10px;
       background: #1a1a2e;
       color: #fff;
       margin-bottom: 20px;
-      box-shadow: inset 0 0 10px #9d4edd;
+      box-shadow: inset 0 0 12px #9d4edd;
     }
 
     .buttons {
@@ -44,7 +44,7 @@
     }
 
     button {
-      padding: 18px;
+      padding: 20px;
       font-size: 18px;
       font-weight: bold;
       border: none;
@@ -78,7 +78,7 @@
 </head>
 <body>
   <div class="calculator">
-    <input type="text" id="display" class="display" disabled>
+    <input type="text" id="display" class="display" readonly>
     <div class="buttons">
       <button onclick="append('7')">7</button>
       <button onclick="append('8')">8</button>
@@ -110,6 +110,8 @@
       <button onclick="append('log(')">log</button>
       <button onclick="append('ln(')">ln</button>
 
+      <button onclick="append('(')">(</button>
+      <button onclick="append(')')">)</button>
       <button class="clear" onclick="clearDisplay()">C</button>
     </div>
   </div>
