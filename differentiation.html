@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Differentiation - MathMagix</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+  <script>
+    function differentiate() {
+      let expr = document.getElementById("diff-input").value;
+      try {
+        let derivative = math.derivative(expr, 'x').toString();
+        document.getElementById("diff-result").innerText = "d/dx(" + expr + ") = " + derivative;
+      } catch {
+        document.getElementById("diff-result").innerText = "Error";
+      }
+    }
+  </script>
+</head>
+<body>
+  <button class="openbtn" onclick="openNav()">☰ Menu</button>
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" onclick="closeNav()">✖ Close</a>
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="differentiation.html">Differentiation</a>
+    <a href="integration.html">Integration</a>
+    <a href="about.html">About Us</a>
+  </div>
+
+  <div class="content">
+    <h1>📈 Differentiation</h1>
+    <input id="diff-input" placeholder="Enter function, e.g. x^2 + 3x">
+    <button onclick="differentiate()">Differentiate</button>
+    <p id="diff-result"></p>
+  </div>
+</body>
+</html>
