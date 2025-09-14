@@ -5,25 +5,23 @@
   <title>MathMagix Home</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .home-box {
-      background: rgba(0, 0, 0, 0.7);
-      padding: 40px;
-      border-radius: 20px;
+    .home-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* full screen */
       text-align: center;
-      box-shadow: 0 0 25px #9d4edd;
-      width: 60%;
-      margin: auto;
-      margin-top: 15%;
+      flex-direction: column;
+      color: #fff;
+      text-shadow: 0 0 12px #9d4edd;
     }
-    .home-box h1 {
-      font-size: 42px;
-      color: #ffffff;
-      margin-bottom: 15px;
-      text-shadow: 0 0 10px #9d4edd;
+    .home-content h1 {
+      font-size: 50px;
+      margin-bottom: 20px;
     }
-    .home-box p {
-      font-size: 20px;
-      color: #f1f1f1;
+    .home-content p {
+      font-size: 22px;
+      max-width: 700px;
     }
   </style>
   <script>
@@ -46,10 +44,10 @@
     <a href="about.html">About Us</a>
   </div>
 
-  <!-- Centered Welcome Box -->
-  <div class="home-box">
+  <!-- Centered Welcome Content -->
+  <div class="home-content">
     <h1>🌌 Welcome to MathMagix</h1>
-    <p>Your all-in-one magical calculator for every kind of math ✨</p>
+    <p>Explore the galaxy of mathematics – from simple sums to advanced calculus ✨</p>
   </div>
 </body>
 </html>
