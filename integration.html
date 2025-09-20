@@ -7,7 +7,7 @@
 
 <!-- Algebrite for symbolic integration -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/algebrite/1.5.0/algebrite.min.js"></script>
-<!-- math.js for numeric evaluation and plotting -->
+<!-- math.js for numeric evaluation -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.12.0/math.min.js"></script>
 <!-- Plotly.js for graph -->
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -95,7 +95,7 @@ function toggleSidebar(){
   sidebar.style.width = sidebar.style.width==="250px"?"0":"250px";
 }
 
-// Indefinite integral - works without limits
+// Indefinite integral (symbolic, no limits required)
 function computeIntegral(){
   const input = document.getElementById("funcInput").value;
   if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
@@ -108,17 +108,22 @@ function computeIntegral(){
   }
 }
 
-// Definite integral - only if limits are provided
+// Definite integral (numeric approximation)
 function computeDefiniteIntegral(){
   const input = document.getElementById("funcInput").value;
-  const a = document.getElementById("lowerLimit").value;
-  const b = document.getElementById("upperLimit").value;
+  const a = parseFloat(document.getElementById("lowerLimit").value);
+  const b = parseFloat(document.getElementById("upperLimit").value);
   if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
-  if(a==="" || b===""){ document.getElementById("output").innerText="Please enter both limits a and b"; return; }
+  if(isNaN(a) || isNaN(b)){ document.getElementById("output").innerText="Please enter both limits a and b"; return; }
   try{
-    const integral = Algebrite.integral(input).toString();
-    const numeric = parseFloat(Algebrite.run(`eval(subst(x, ${b}, ${integral}))`)) - parseFloat(Algebrite.run(`eval(subst(x, ${a}, ${integral}))`));
-    document.getElementById("output").innerHTML = `<b>Definite Integral from ${a} to ${b}:</b> ${numeric}<br><b>Symbolic Integral:</b> ${integral} + C`;
+    const f = (x)=> math.evaluate(input,{x:x});
+    const n = 1000; // steps for trapezoidal rule
+    const h = (b-a)/n;
+    let sum = 0.5*(f(a)+f(b));
+    for(let i=1;i<n;i++){ sum+=f(a+i*h); }
+    const numeric = sum*h;
+    const symbolic = Algebrite.integral(input).toString();
+    document.getElementById("output").innerHTML = `<b>Definite Integral from ${a} to ${b}:</b> ${numeric.toFixed(6)}<br><b>Symbolic Integral:</b> ${symbolic} + C`;
     plotGraph(input);
   }catch(err){
     document.getElementById("output").innerText="Invalid function or limits. Please type like x^2 + 2*x + 1";
@@ -128,18 +133,20 @@ function computeDefiniteIntegral(){
 // Show steps
 function showSteps(){
   const input = document.getElementById("funcInput").value;
-  const a = document.getElementById("lowerLimit").value;
-  const b = document.getElementById("upperLimit").value;
+  const a = parseFloat(document.getElementById("lowerLimit").value);
+  const b = parseFloat(document.getElementById("upperLimit").value);
   if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
   try{
-    const integral = Algebrite.integral(input).toString();
-    let outputHTML = `<b>Symbolic Integral:</b> ${integral} + C<br><b>Step-by-Step:</b> Symbolic integration using Algebrite`;
-
-    if(a!=="" && b!==""){
-      const numeric = parseFloat(Algebrite.run(`eval(subst(x, ${b}, ${integral}))`)) - parseFloat(Algebrite.run(`eval(subst(x, ${a}, ${integral}))`));
-      outputHTML += `<br>Definite Integral from ${a} to ${b} → ${numeric}`;
+    const symbolic = Algebrite.integral(input).toString();
+    let outputHTML = `<b>Symbolic Integral:</b> ${symbolic} + C<br><b>Step-by-Step:</b> Symbolic integration using Algebrite`;
+    if(!isNaN(a) && !isNaN(b)){
+      const f = (x)=> math.evaluate(input,{x:x});
+      const n = 1000; const h=(b-a)/n;
+      let sum = 0.5*(f(a)+f(b));
+      for(let i=1;i<n;i++){ sum+=f(a+i*h); }
+      const numeric = sum*h;
+      outputHTML += `<br>Definite Integral from ${a} to ${b} → ${numeric.toFixed(6)}`;
     }
-
     document.getElementById("output").innerHTML = outputHTML;
     plotGraph(input);
   }catch(err){
