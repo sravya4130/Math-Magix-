@@ -5,7 +5,12 @@
 <title>MathMagix Home</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  /* Sidebar */
+  body {
+    transition: margin-left .5s;
+    overflow-x: hidden;
+  }
+
+  /* Sidebar (HDIL style) */
   .sidebar {
     height: 100%;
     width: 0;
@@ -13,7 +18,7 @@
     z-index: 2;
     top: 0;
     left: 0;
-    background: rgba(10, 6, 20, 0.6); /* transparent */
+    background: rgba(10,6,20,0.65);
     backdrop-filter: blur(6px);
     overflow-x: hidden;
     transition: 0.5s;
@@ -40,7 +45,7 @@
     border-radius: 8px;
   }
 
-  /* Center content */
+  /* Content */
   .home-content {
     position: relative;
     z-index: 1;
@@ -52,6 +57,7 @@
     text-align: center;
     color: white;
     padding-top: 150px;
+    transition: margin-left .5s;
   }
   .home-content h1 {
     font-size: 50px;
@@ -64,7 +70,7 @@
     text-shadow: 0 0 12px #9d4edd;
   }
 
-  /* Neon glow animation */
+  /* Neon glow */
   @keyframes neonGlow {
     from {
       text-shadow: 0 0 10px #9d4edd, 0 0 20px #9d4edd, 0 0 30px #6a00f4;
@@ -77,22 +83,23 @@
   }
 </style>
 <script>
-  function toggleNav() {
-    const sb = document.getElementById("mySidebar");
-    if (sb.style.width === "250px") {
-      sb.style.width = "0";
-    } else {
-      sb.style.width = "250px";
-    }
+  function openNav() {
+    document.getElementById("mySidebar").style.width = "250px";
+    document.querySelector(".home-content").style.marginLeft = "250px";
+  }
+
+  function closeNav() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.querySelector(".home-content").style.marginLeft = "0";
   }
 </script>
 </head>
 <body>
-  <!-- Sliding Sidebar Button -->
-  <button class="openbtn" onclick="toggleNav()">☰ Menu</button>
+  <!-- Sidebar Button -->
+  <button class="openbtn" onclick="openNav()">☰ Menu</button>
 
-  <!-- Sliding Sidebar -->
-  <div id="mySidebar" class="sidebar">
+  <!-- Sidebar -->
+  <div id="mySidebar" class="sidebar" onclick="closeNav()">
     <a href="index.html">Home</a>
     <a href="calculator.html">Calculator</a>
     <a href="differentiation.html">Differentiation</a>
@@ -101,7 +108,7 @@
     <a href="about.html">About Us</a>
   </div>
 
-  <!-- Centered Welcome Content -->
+  <!-- Content -->
   <div class="home-content">
     <h1>Welcome to MathMagix</h1>
     <p>Explore the galaxy of mathematics – from simple sums to advanced calculus ✨</p>
