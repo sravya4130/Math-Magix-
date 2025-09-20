@@ -13,7 +13,7 @@
     z-index: 2;
     top: 0;
     left: 0;
-    background: rgba(10,6,20,0.75);
+    background: rgba(10, 6, 20, 0.6); /* transparent */
     backdrop-filter: blur(6px);
     overflow-x: hidden;
     transition: 0.5s;
@@ -27,7 +27,7 @@
     display: block;
     transition: 0.3s;
   }
-  .sidebar a:hover { background: #9d4edd; }
+  .sidebar a:hover { background: rgba(157, 78, 221, 0.6); }
 
   .openbtn {
     font-size: 20px;
@@ -47,19 +47,43 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
     color: white;
+    padding-top: 150px;
+  }
+  .home-content h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
+    animation: neonGlow 2s infinite alternate;
+  }
+  .home-content p {
+    font-size: 22px;
+    max-width: 700px;
     text-shadow: 0 0 12px #9d4edd;
   }
-  .home-content h1 { font-size: 50px; margin-bottom: 20px; }
-  .home-content p { font-size: 22px; max-width: 700px; }
+
+  /* Neon glow animation */
+  @keyframes neonGlow {
+    from {
+      text-shadow: 0 0 10px #9d4edd, 0 0 20px #9d4edd, 0 0 30px #6a00f4;
+      color: #fff;
+    }
+    to {
+      text-shadow: 0 0 20px #fff, 0 0 40px #ff4fff, 0 0 60px #9d4edd;
+      color: #f8f8ff;
+    }
+  }
 </style>
 <script>
   function toggleNav() {
     const sb = document.getElementById("mySidebar");
-    sb.style.width = (sb.style.width === "250px") ? "0" : "250px";
+    if (sb.style.width === "250px") {
+      sb.style.width = "0";
+    } else {
+      sb.style.width = "250px";
+    }
   }
 </script>
 </head>
@@ -79,13 +103,8 @@
 
   <!-- Centered Welcome Content -->
   <div class="home-content">
-    <h1>🌌 Welcome to MathMagix</h1>
+    <h1>Welcome to MathMagix</h1>
     <p>Explore the galaxy of mathematics – from simple sums to advanced calculus ✨</p>
   </div>
-
-  <!-- Include Galaxy + Stars JS (from previous snippet) -->
-  <script>
-    // Add your galaxy + stars + shooting star code here (same as previous)
-  </script>
 </body>
 </html>
