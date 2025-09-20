@@ -19,21 +19,30 @@ body {
   background-size: cover;
   background-attachment: fixed;
 }
+
+/* Sidebar */
 .sidebar { height:100%; width:0; position:fixed; top:0; left:0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); overflow-x:hidden; transition:0.4s; padding-top:60px; z-index:1000; }
 .sidebar a { padding:12px 24px; text-decoration:none; font-size:1.2em; color:#fff; display:block; transition:0.2s; }
 .sidebar a:hover { background: rgba(255,255,255,0.2); }
+
 .hamburger { font-size:30px; cursor:pointer; position:fixed; top:20px; left:20px; color:#fff; z-index:1001; }
 
+/* Page content */
 .container { padding:120px 20px 50px 20px; max-width:900px; margin:0 auto; }
 h1 { text-align:center; font-size:3em; text-shadow: 0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; animation: glow 2s ease-in-out infinite alternate; }
 h2 { text-align:center; font-size:1.5em; margin-top:-10px; text-shadow: 0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; animation: glow-soft 3s ease-in-out infinite alternate; }
 @keyframes glow { from { text-shadow:0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; } to { text-shadow:0 0 20px #66ffff,0 0 40px #66ffff,0 0 60px #66ffff; } }
 @keyframes glow-soft { from { text-shadow:0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; } to { text-shadow:0 0 10px #ff99ff,0 0 20px #ff99ff,0 0 30px #ff99ff; } }
 
-.box { background: rgba(255,255,255,0.95); color:#000; border-radius:12px; padding:20px; margin:20px 0; min-height:80px; font-size:1.2em; }
-input[type="text"] { width:100%; font-size:1.2em; padding:12px; border-radius:8px; border:1px solid #ccc; }
+/* Input & output boxes */
+.box { background: rgba(255,255,255,0.95); color:#000; border-radius:12px; padding:20px; margin:20px 0; font-size:1.2em; }
+input[type="text"] { width:100%; font-size:1.2em; padding:12px; border-radius:8px; border:1px solid #ccc; margin-bottom:10px; }
+input[type="number"] { width:100px; font-size:1em; padding:6px; border-radius:6px; border:1px solid #ccc; margin-left:10px; }
+
+/* Buttons */
 .btn { background: rgba(0,150,255,0.8); color:white; padding:12px 20px; margin-top:15px; font-size:1.1em; border:none; border-radius:8px; cursor:pointer; margin-right:10px; transition:transform 0.2s, box-shadow 0.2s; }
 .btn:hover { transform:scale(1.05); box-shadow:0 0 15px #00eaff,0 0 30px #00eaff; }
+
 .graph-note { margin-top:20px; text-align:center; font-size:1em; color:#fff; }
 #graph-container { background: rgba(255,255,255,0.95); border-radius:12px; margin-top:20px; padding:10px; min-height:400px; }
 </style>
@@ -54,10 +63,15 @@ input[type="text"] { width:100%; font-size:1.2em; padding:12px; border-radius:8p
 
 <div class="container">
   <h1>Differentiation</h1>
-  <h2>Compute derivatives instantly ✨</h2>
+  <h2>Compute derivatives and evaluate at points ✨</h2>
 
   <div class="box">
     <input type="text" id="funcInput" placeholder="Enter function e.g. x^3 + 2*x - 5">
+    <div style="margin-top:10px;">
+      <label for="evalX">Evaluate derivative at x = </label>
+      <input type="number" id="evalX" placeholder="optional">
+      <button class="btn" onclick="computeAtPoint()">Compute at Point</button>
+    </div>
   </div>
 
   <button class="btn" onclick="computeDerivative()">Compute Derivative</button>
@@ -92,11 +106,35 @@ function computeDerivative(){
 
 function showSteps(){
   const input = document.getElementById("funcInput").value;
+  const xVal = document.getElementById("evalX").value;
   if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
   try{
     const expr = math.parse(input);
     const derivative = math.derivative(expr,'x').toString();
-    document.getElementById("output").innerHTML = `<b>Derivative:</b> ${derivative}<br><b>Step-by-Step:</b> Symbolic differentiation applied using math.js`;
+    let outputHTML = `<b>Derivative:</b> ${derivative}<br><b>Step-by-Step:</b> Symbolic differentiation using math.js`;
+
+    if(xVal!==""){
+      const numeric = math.evaluate(derivative,{x: parseFloat(xVal)});
+      outputHTML += `<br>Substitute x = ${xVal} → ${numeric}`;
+    }
+
+    document.getElementById("output").innerHTML = outputHTML;
+    plotGraph(derivative);
+  }catch(err){
+    document.getElementById("output").innerText="Invalid function. Please type like x^2 + 2*x + 1";
+  }
+}
+
+function computeAtPoint(){
+  const input = document.getElementById("funcInput").value;
+  const xVal = document.getElementById("evalX").value;
+  if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
+  if(xVal===""){ document.getElementById("output").innerText="Please enter a numeric value for x"; return; }
+  try{
+    const expr = math.parse(input);
+    const derivative = math.derivative(expr,'x').toString();
+    const numeric = math.evaluate(derivative,{x: parseFloat(xVal)});
+    document.getElementById("output").innerHTML = `<b>Derivative:</b> ${derivative}<br><b>At x = ${xVal}:</b> ${numeric}`;
     plotGraph(derivative);
   }catch(err){
     document.getElementById("output").innerText="Invalid function. Please type like x^2 + 2*x + 1";
@@ -109,8 +147,7 @@ function plotGraph(derivative){
   const yValues = [];
   for(let x=-10; x<=10; x+=0.1){
     try{
-      const scope = {x:x};
-      const y = math.evaluate(derivative,scope);
+      const y = math.evaluate(derivative,{x:x});
       xValues.push(x);
       yValues.push(y);
     }catch(e){
