@@ -95,7 +95,7 @@ function toggleSidebar(){
   sidebar.style.width = sidebar.style.width==="250px"?"0":"250px";
 }
 
-// Indefinite integral
+// Indefinite integral - works without limits
 function computeIntegral(){
   const input = document.getElementById("funcInput").value;
   if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
@@ -108,7 +108,7 @@ function computeIntegral(){
   }
 }
 
-// Definite integral
+// Definite integral - only if limits are provided
 function computeDefiniteIntegral(){
   const input = document.getElementById("funcInput").value;
   const a = document.getElementById("lowerLimit").value;
