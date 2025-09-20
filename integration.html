@@ -1,38 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Integration - MathMagix</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
-  <script>
-    function integrate() {
-      let expr = document.getElementById("int-input").value;
-      try {
-        // Math.js doesn't fully integrate, so we'll mimic with simplify for now
-        document.getElementById("int-result").innerText = "∫(" + expr + ") dx = [symbolic integration needs advanced lib]";
-      } catch {
-        document.getElementById("int-result").innerText = "Error";
-      }
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integration - MathMagix</title>
+
+<!-- math.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.12.0/math.min.js"></script>
+<!-- Plotly.js -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+  background: radial-gradient(circle at bottom, #0d1b2a, #000000 80%);
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* Sidebar */
+.sidebar { height:100%; width:0; position:fixed; top:0; left:0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); overflow-x:hidden; transition:0.4s; padding-top:60px; z-index:1000; }
+.sidebar a { padding:12px 24px; text-decoration:none; font-size:1.2em; color:#fff; display:block; transition:0.2s; }
+.sidebar a:hover { background: rgba(255,255,255,0.2); }
+
+.hamburger { font-size:30px; cursor:pointer; position:fixed; top:20px; left:20px; color:#fff; z-index:1001; }
+
+/* Page content */
+.container { padding:120px 20px 50px 20px; max-width:900px; margin:0 auto; }
+h1 { text-align:center; font-size:3em; text-shadow: 0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; animation: glow 2s ease-in-out infinite alternate; }
+h2 { text-align:center; font-size:1.5em; margin-top:-10px; text-shadow: 0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; animation: glow-soft 3s ease-in-out infinite alternate; }
+@keyframes glow { from { text-shadow:0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; } to { text-shadow:0 0 20px #66ffff,0 0 40px #66ffff,0 0 60px #66ffff; } }
+@keyframes glow-soft { from { text-shadow:0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; } to { text-shadow:0 0 10px #ff99ff,0 0 20px #ff99ff,0 0 30px #ff99ff; } }
+
+/* Input & output boxes */
+.box { background: rgba(255,255,255,0.95); color:#000; border-radius:12px; padding:20px; margin:20px 0; font-size:1.2em; }
+input[type="text"], input[type="number"] { font-size:1.2em; padding:12px; border-radius:8px; border:1px solid #ccc; margin-bottom:10px; }
+input[type="number"] { width:100px; margin-left:10px; }
+
+/* Buttons */
+.btn { background: rgba(0,150,255,0.8); color:white; padding:12px 20px; margin-top:15px; font-size:1.1em; border:none; border-radius:8px; cursor:pointer; margin-right:10px; transition:transform 0.2s, box-shadow 0.2s; }
+.btn:hover { transform:scale(1.05); box-shadow:0 0 15px #00eaff,0 0 30px #00eaff; }
+
+.graph-note { margin-top:20px; text-align:center; font-size:1em; color:#fff; }
+#graph-container { background: rgba(255,255,255,0.95); border-radius:12px; margin-top:20px; padding:10px; min-height:400px; }
+</style>
 </head>
 <body>
-  <button class="openbtn" onclick="openNav()">☰ Menu</button>
-  <div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" onclick="closeNav()">✖ Close</a>
-    <a href="index.html">Home</a>
-    <a href="calculator.html">Calculator</a>
-    <a href="differentiation.html">Differentiation</a>
-    <a href="integration.html">Integration</a>
-    <a href="about.html">About Us</a>
+
+<div id="mySidebar" class="sidebar">
+  <a href="index.html">🏠 Home</a>
+  <a href="calculator.html">📟 Calculator</a>
+  <a href="step-solver.html">🔢 Step Solver</a>
+  <a href="differentiation.html">∂ Differentiation</a>
+  <a href="integration.html">∫ Integration</a>
+  <a href="graph.html">📈 Graph</a>
+  <a href="about.html">ℹ️ About Us</a>
+</div>
+
+<span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+
+<div class="container">
+  <h1>Integration</h1>
+  <h2>Compute integrals and evaluate at points ✨</h2>
+
+  <div class="box">
+    <input type="text" id="funcInput" placeholder="Enter function e.g. x^2 + 2*x">
+    <div style="margin-top:10px;">
+      <label for="lowerLimit">a = </label>
+      <input type="number" id="lowerLimit" placeholder="optional">
+      <label for="upperLimit">b = </label>
+      <input type="number" id="upperLimit" placeholder="optional">
+      <button class="btn" onclick="computeDefiniteIntegral()">Compute Definite Integral</button>
+    </div>
   </div>
 
-  <div class="content">
-    <h1>∫ Integration</h1>
-    <input id="int-input" placeholder="Enter function, e.g. x^2">
-    <button onclick="integrate()">Integrate</button>
-    <p id="int-result"></p>
+  <button class="btn" onclick="computeIntegral()">Compute Indefinite Integral</button>
+  <button class="btn" onclick="showSteps()">Show Steps</button>
+
+  <div class="box" id="output">Integral will appear here...</div>
+
+  <div class="graph-note">
+    Note: For better accuracy, go to the <a href="graph.html" style="color:#00eaff;">Graph page</a> to analyze functions visually.
   </div>
+  <div id="graph-container">Graph will appear here</div>
+</div>
+
+<script>
+function toggleSidebar(){
+  const sidebar = document.getElementById("mySidebar");
+  sidebar.style.width = sidebar.style.width==="250px"?"0":"250px";
+}
+
+// Indefinite integral
+function computeIntegral(){
+  const input = document.getElementById("funcInput").value;
+  if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
+  try{
+    const expr = math.parse(input);
+    const integral = math.integral(expr,'x').toString();
+    document.getElementById("output").innerHTML = `<b>Indefinite Integral:</b> ${integral} + C`;
+    plotGraph(expr); // plot original function
+  }catch(err){
+    document.getElementById("output").innerText="Invalid function. Please type like x^2 + 2*x + 1";
+  }
+}
+
+// Definite integral
+function computeDefiniteIntegral(){
+  const input = document.getElementById("funcInput").value;
+  const a = document.getElementById("lowerLimit").value;
+  const b = document.getElementById("upperLimit").value;
+  if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
+  if(a==="" || b===""){ document.getElementById("output").innerText="Please enter both limits a and b"; return; }
+  try{
+    const expr = math.parse(input);
+    const integralExpr = math.integral(expr,'x');
+    const numeric = math.evaluate(integralExpr,{x: parseFloat(b)}) - math.evaluate(integralExpr,{x: parseFloat(a)});
+    document.getElementById("output").innerHTML = `<b>Definite Integral from ${a} to ${b}:</b> ${numeric}<br><b>Symbolic Integral:</b> ${integralExpr} + C`;
+    plotGraph(expr); // plot original function
+  }catch(err){
+    document.getElementById("output").innerText="Invalid function or limits. Please type like x^2 + 2*x + 1";
+  }
+}
+
+// Show steps
+function showSteps(){
+  const input = document.getElementById("funcInput").value;
+  const a = document.getElementById("lowerLimit").value;
+  const b = document.getElementById("upperLimit").value;
+  if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
+  try{
+    const expr = math.parse(input);
+    const integralExpr = math.integral(expr,'x').toString();
+    let outputHTML = `<b>Symbolic Integral:</b> ${integralExpr} + C<br><b>Step-by-Step:</b> Using math.js symbolic integration`;
+
+    if(a!=="" && b!==""){
+      const numeric = math.evaluate(integralExpr,{x: parseFloat(b)}) - math.evaluate(integralExpr,{x: parseFloat(a)});
+      outputHTML += `<br>Definite Integral from ${a} to ${b} → ${numeric}`;
+    }
+
+    document.getElementById("output").innerHTML = outputHTML;
+    plotGraph(expr);
+  }catch(err){
+    document.getElementById("output").innerText="Invalid function or limits. Please type like x^2 + 2*x + 1";
+  }
+}
+
+// Plot function graph
+function plotGraph(expr){
+  const xValues = [];
+  const yValues = [];
+  for(let x=-10; x<=10; x+=0.1){
+    try{
+      const y = math.evaluate(expr,{x:x});
+      xValues.push(x);
+      yValues.push(y);
+    }catch(e){
+      xValues.push(x);
+      yValues.push(null);
+    }
+  }
+  const trace = { x:xValues, y:yValues, mode:'lines', name:'Function' };
+  const layout = { title:'Function Graph', plot_bgcolor:'#0d1b2a', paper_bgcolor:'#0d1b2a', font:{color:'#fff'}, xaxis:{title:'x'}, yaxis:{title:"f(x)"} };
+  Plotly.newPlot('graph-container',[trace],layout,{responsive:true});
+}
+</script>
 </body>
 </html>
