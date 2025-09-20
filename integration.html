@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Integration - MathMagix</title>
 
-<!-- math.js -->
+<!-- Algebrite for symbolic integration -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/algebrite/1.5.0/algebrite.min.js"></script>
+<!-- math.js for numeric evaluation and plotting -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.12.0/math.min.js"></script>
-<!-- Plotly.js -->
+<!-- Plotly.js for graph -->
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <style>
@@ -98,10 +100,9 @@ function computeIntegral(){
   const input = document.getElementById("funcInput").value;
   if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
   try{
-    const expr = math.parse(input);
-    const integral = math.integral(expr,'x').toString();
+    const integral = Algebrite.integral(input).toString();
     document.getElementById("output").innerHTML = `<b>Indefinite Integral:</b> ${integral} + C`;
-    plotGraph(expr); // plot original function
+    plotGraph(input);
   }catch(err){
     document.getElementById("output").innerText="Invalid function. Please type like x^2 + 2*x + 1";
   }
@@ -115,11 +116,10 @@ function computeDefiniteIntegral(){
   if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
   if(a==="" || b===""){ document.getElementById("output").innerText="Please enter both limits a and b"; return; }
   try{
-    const expr = math.parse(input);
-    const integralExpr = math.integral(expr,'x');
-    const numeric = math.evaluate(integralExpr,{x: parseFloat(b)}) - math.evaluate(integralExpr,{x: parseFloat(a)});
-    document.getElementById("output").innerHTML = `<b>Definite Integral from ${a} to ${b}:</b> ${numeric}<br><b>Symbolic Integral:</b> ${integralExpr} + C`;
-    plotGraph(expr); // plot original function
+    const integral = Algebrite.integral(input).toString();
+    const numeric = parseFloat(Algebrite.run(`eval(subst(x, ${b}, ${integral}))`)) - parseFloat(Algebrite.run(`eval(subst(x, ${a}, ${integral}))`));
+    document.getElementById("output").innerHTML = `<b>Definite Integral from ${a} to ${b}:</b> ${numeric}<br><b>Symbolic Integral:</b> ${integral} + C`;
+    plotGraph(input);
   }catch(err){
     document.getElementById("output").innerText="Invalid function or limits. Please type like x^2 + 2*x + 1";
   }
@@ -132,29 +132,28 @@ function showSteps(){
   const b = document.getElementById("upperLimit").value;
   if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
   try{
-    const expr = math.parse(input);
-    const integralExpr = math.integral(expr,'x').toString();
-    let outputHTML = `<b>Symbolic Integral:</b> ${integralExpr} + C<br><b>Step-by-Step:</b> Using math.js symbolic integration`;
+    const integral = Algebrite.integral(input).toString();
+    let outputHTML = `<b>Symbolic Integral:</b> ${integral} + C<br><b>Step-by-Step:</b> Symbolic integration using Algebrite`;
 
     if(a!=="" && b!==""){
-      const numeric = math.evaluate(integralExpr,{x: parseFloat(b)}) - math.evaluate(integralExpr,{x: parseFloat(a)});
+      const numeric = parseFloat(Algebrite.run(`eval(subst(x, ${b}, ${integral}))`)) - parseFloat(Algebrite.run(`eval(subst(x, ${a}, ${integral}))`));
       outputHTML += `<br>Definite Integral from ${a} to ${b} → ${numeric}`;
     }
 
     document.getElementById("output").innerHTML = outputHTML;
-    plotGraph(expr);
+    plotGraph(input);
   }catch(err){
     document.getElementById("output").innerText="Invalid function or limits. Please type like x^2 + 2*x + 1";
   }
 }
 
 // Plot function graph
-function plotGraph(expr){
+function plotGraph(exprStr){
   const xValues = [];
   const yValues = [];
   for(let x=-10; x<=10; x+=0.1){
     try{
-      const y = math.evaluate(expr,{x:x});
+      const y = math.evaluate(exprStr,{x:x});
       xValues.push(x);
       yValues.push(y);
     }catch(e){
