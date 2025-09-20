@@ -22,131 +22,31 @@
     background-attachment: fixed;
   }
 
-  /* Sidebar */
-  .sidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(6px);
-    overflow-x: hidden;
-    transition: 0.4s;
-    padding-top: 60px;
-    z-index: 1000;
-  }
-  .sidebar a {
-    padding: 12px 24px;
-    text-decoration: none;
-    font-size: 1.2em;
-    color: #fff;
-    display: block;
-    transition: 0.2s;
-  }
-  .sidebar a:hover {
-    background: rgba(255,255,255,0.2);
-  }
+  .sidebar { height:100%; width:0; position:fixed; top:0; left:0; background: rgba(0,0,0,0.7); backdrop-filter:blur(6px); overflow-x:hidden; transition:0.4s; padding-top:60px; z-index:1000; }
+  .sidebar a { padding:12px 24px; text-decoration:none; font-size:1.2em; color:#fff; display:block; transition:0.2s; }
+  .sidebar a:hover { background: rgba(255,255,255,0.2); }
 
-  .hamburger {
-    font-size: 30px;
-    cursor: pointer;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    color: #fff;
-    z-index: 1001;
-  }
+  .hamburger { font-size:30px; cursor:pointer; position:fixed; top:20px; left:20px; color:#fff; z-index:1001; }
 
-  /* Page content */
-  .container {
-    padding: 120px 20px 50px 20px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
+  .container { padding:120px 20px 50px 20px; max-width:900px; margin:0 auto; }
+  h1 { text-align:center; font-size:3em; text-shadow:0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; animation: glow 2s ease-in-out infinite alternate; }
+  h2 { text-align:center; font-size:1.5em; margin-top:-10px; text-shadow:0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; animation: glow-soft 3s ease-in-out infinite alternate; }
+  @keyframes glow { from { text-shadow:0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; } to { text-shadow:0 0 20px #66ffff,0 0 40px #66ffff,0 0 60px #66ffff; } }
+  @keyframes glow-soft { from { text-shadow:0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; } to { text-shadow:0 0 10px #ff99ff,0 0 20px #ff99ff,0 0 30px #ff99ff; } }
 
-  h1 {
-    text-align: center;
-    font-size: 3em;
-    text-shadow: 0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff;
-    animation: glow 2s ease-in-out infinite alternate;
-  }
+  .box { background: rgba(255,255,255,0.95); color:#000; border-radius:12px; padding:20px; margin:20px 0; min-height:80px; font-size:1.2em; }
+  input[type="text"] { width:100%; font-size:1.2em; padding:12px; border-radius:8px; border:1px solid #ccc; }
 
-  h2 {
-    text-align: center;
-    font-size: 1.5em;
-    margin-top: -10px;
-    text-shadow: 0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff;
-    animation: glow-soft 3s ease-in-out infinite alternate;
-  }
+  .btn { background: rgba(0,150,255,0.8); color:white; padding:12px 20px; margin-top:15px; font-size:1.1em; border:none; border-radius:8px; cursor:pointer; margin-right:10px; transition:transform 0.2s, box-shadow 0.2s; }
+  .btn:hover { transform:scale(1.05); box-shadow:0 0 15px #00eaff,0 0 30px #00eaff; }
 
-  @keyframes glow {
-    from { text-shadow: 0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; }
-    to { text-shadow: 0 0 20px #66ffff,0 0 40px #66ffff,0 0 60px #66ffff; }
-  }
-  @keyframes glow-soft {
-    from { text-shadow: 0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; }
-    to { text-shadow: 0 0 10px #ff99ff,0 0 20px #ff99ff,0 0 30px #ff99ff; }
-  }
-
-  /* Input & output boxes */
-  .box {
-    background: rgba(255,255,255,0.95);
-    color: #000;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 20px 0;
-    min-height: 80px;
-    font-size: 1.2em;
-  }
-  input[type="text"] {
-    width: 100%;
-    font-size: 1.2em;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
-
-  /* Buttons */
-  .btn {
-    background: rgba(0, 150, 255, 0.8);
-    color: white;
-    padding: 12px 20px;
-    margin-top: 15px;
-    font-size: 1.1em;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px #00eaff,0 0 30px #00eaff;
-  }
-
-  /* Graph note */
-  .graph-note {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 1em;
-    color: #fff;
-  }
-
-  /* Graph placeholder */
-  #graph-container {
-    background: rgba(255,255,255,0.95);
-    border-radius: 12px;
-    margin-top: 20px;
-    padding: 10px;
-    min-height: 400px;
-  }
+  .graph-note { margin-top:20px; text-align:center; font-size:1em; color:#fff; }
+  #graph-container { background: rgba(255,255,255,0.95); border-radius:12px; margin-top:20px; padding:10px; min-height:400px; }
 
 </style>
 </head>
 <body>
 
-<!-- Sidebar -->
 <div id="mySidebar" class="sidebar">
   <a href="index.html">🏠 Home</a>
   <a href="calculator.html">📟 Calculator</a>
@@ -157,27 +57,21 @@
   <a href="about.html">ℹ️ About Us</a>
 </div>
 
-<!-- Hamburger -->
 <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
 
-<!-- Main content -->
 <div class="container">
   <h1>Differentiation</h1>
   <h2>Compute derivatives instantly ✨</h2>
 
-  <!-- Input -->
   <div class="box">
     <input type="text" id="funcInput" placeholder="Enter function e.g. x^3 + 2*x - 5">
   </div>
 
-  <!-- Buttons -->
   <button class="btn" onclick="computeDerivative()">Compute Derivative</button>
   <button class="btn" onclick="showSteps()">Show Steps</button>
 
-  <!-- Output -->
   <div class="box" id="output">Derivative will appear here...</div>
 
-  <!-- Graph note & button -->
   <div class="graph-note">
     Note: For better accuracy, go to the <a href="graph.html" style="color:#00eaff;">Graph page</a> to analyze functions visually.
   </div>
@@ -187,41 +81,44 @@
 <script>
   function toggleSidebar() {
     const sidebar = document.getElementById("mySidebar");
-    if(sidebar.style.width === "250px"){
-      sidebar.style.width = "0";
-    } else {
-      sidebar.style.width = "250px";
-    }
+    if(sidebar.style.width==="250px"){ sidebar.style.width="0"; }
+    else{ sidebar.style.width="250px"; }
+  }
+
+  // Preprocess input: replace ², ³ and insert * for implied multiplication
+  function preprocessInput(str){
+    str = str.replace(/²/g, '^2').replace(/³/g, '^3');
+    // Insert * between number and variable (2x -> 2*x)
+    str = str.replace(/(\d)([a-zA-Z])/g,'$1*$2');
+    // Insert * between variable and function (xsin(x) -> x*sin(x))
+    str = str.replace(/([a-zA-Z])(?=sin|cos|tan|log|exp)/g,'$1*');
+    return str;
   }
 
   function computeDerivative(){
-    const func = document.getElementById("funcInput").value;
-    if(!func){
-      document.getElementById("output").innerText = "Please enter a function!";
-      return;
-    }
+    const input = document.getElementById("funcInput").value;
+    if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
     try{
+      const func = preprocessInput(input);
       const deriv = nerdamer(`diff(${func}, x)`).toString();
       document.getElementById("output").innerHTML = `<b>Derivative:</b> ${deriv}`;
     }catch(err){
-      document.getElementById("output").innerText = "Invalid function. Please check your input.";
+      document.getElementById("output").innerText="Invalid function. Please check your input.";
     }
   }
 
   function showSteps(){
-    const func = document.getElementById("funcInput").value;
-    if(!func){
-      document.getElementById("output").innerText = "Please enter a function!";
-      return;
-    }
+    const input = document.getElementById("funcInput").value;
+    if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
     try{
-      // Nerdamer doesn't give full steps, so show symbolic derivative as "step"
+      const func = preprocessInput(input);
       const deriv = nerdamer(`diff(${func}, x)`).toString();
-      document.getElementById("output").innerHTML = `<b>Derivative:</b> ${deriv}<br><b>Step-by-Step:</b> Using symbolic differentiation rules applied by Nerdamer.`;
+      document.getElementById("output").innerHTML = `<b>Derivative:</b> ${deriv}<br><b>Step-by-Step:</b> Symbolic differentiation applied automatically.`;
     }catch(err){
-      document.getElementById("output").innerText = "Invalid function. Please check your input.";
+      document.getElementById("output").innerText="Invalid function. Please check your input.";
     }
   }
 </script>
+
 </body>
 </html>
