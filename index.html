@@ -1,117 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>MathMagix Home</title>
-<link rel="stylesheet" href="style.css">
-<style>
-  body {
-    transition: margin-left .5s;
-    overflow-x: hidden;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MathMagix</title>
+  <style>
+    /* Galaxy background */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      background: url('https://www.transparenttextures.com/patterns/stardust.png'),
+                  radial-gradient(circle at bottom, #0d1b2a, #000000 80%);
+      background-size: cover;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      height: 100vh;
+    }
 
-  /* Sidebar (HDIL style) */
-  .sidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 2;
-    top: 0;
-    left: 0;
-    background: rgba(10,6,20,0.65);
-    backdrop-filter: blur(6px);
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-  }
-  .sidebar a {
-    padding: 12px 20px;
-    text-decoration: none;
-    font-size: 20px;
-    color: #f1f1f1;
-    display: block;
-    transition: 0.3s;
-  }
-  .sidebar a:hover { background: rgba(157, 78, 221, 0.6); }
+    /* Floating math symbols */
+    .float {
+      position: absolute;
+      font-size: 22px;
+      opacity: 0.7;
+      animation: floatAnim 20s linear infinite;
+      color: #ffffffb3;
+      text-shadow: 0 0 6px #6df7ff, 0 0 12px #6df7ff;
+    }
+    @keyframes floatAnim {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+    }
 
-  .openbtn {
-    font-size: 20px;
-    cursor: pointer;
-    background: #9d4edd;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    margin: 10px;
-    border-radius: 8px;
-  }
+    /* Center container */
+    .container {
+      text-align: center;
+      padding-top: 100px;
+    }
 
-  /* Content */
-  .home-content {
-    position: relative;
-    z-index: 1;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    text-align: center;
-    color: white;
-    padding-top: 150px;
-    transition: margin-left .5s;
-  }
-  .home-content h1 {
-    font-size: 50px;
-    margin-bottom: 20px;
-    animation: neonGlow 2s infinite alternate;
-  }
-  .home-content p {
-    font-size: 22px;
-    max-width: 700px;
-    text-shadow: 0 0 12px #9d4edd;
-  }
+    /* Heading */
+    h1 {
+      font-size: 3.5em;
+      text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff, 0 0 30px #00eaff;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
 
-  /* Neon glow */
-  @keyframes neonGlow {
-    from {
-      text-shadow: 0 0 10px #9d4edd, 0 0 20px #9d4edd, 0 0 30px #6a00f4;
+    /* Tagline */
+    h2 {
+      font-size: 1.5em;
+      margin-top: -10px;
+      text-shadow: 0 0 6px #ff66ff, 0 0 12px #ff66ff, 0 0 20px #ff66ff;
+      animation: glow-soft 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff, 0 0 30px #00eaff; }
+      to { text-shadow: 0 0 20px #66ffff, 0 0 40px #66ffff, 0 0 60px #66ffff; }
+    }
+    @keyframes glow-soft {
+      from { text-shadow: 0 0 6px #ff66ff, 0 0 12px #ff66ff, 0 0 20px #ff66ff; }
+      to { text-shadow: 0 0 10px #ff99ff, 0 0 20px #ff99ff, 0 0 30px #ff99ff; }
+    }
+
+    /* Buttons */
+    .buttons {
+      margin-top: 50px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .btn {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px 30px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: white;
+      font-size: 1.2em;
+      font-weight: bold;
+      box-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #66ffff, 0 0 40px #66ffff;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      overflow-x: hidden;
+      transition: 0.4s;
+      padding-top: 60px;
+    }
+    .sidebar a {
+      padding: 12px 24px;
+      text-decoration: none;
+      font-size: 1.2em;
       color: #fff;
+      display: block;
+      transition: 0.2s;
     }
-    to {
-      text-shadow: 0 0 20px #fff, 0 0 40px #ff4fff, 0 0 60px #9d4edd;
-      color: #f8f8ff;
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
-  }
-</style>
-<script>
-  function openNav() {
-    document.getElementById("mySidebar").style.width = "250px";
-    document.querySelector(".home-content").style.marginLeft = "250px";
-  }
 
-  function closeNav() {
-    document.getElementById("mySidebar").style.width = "0";
-    document.querySelector(".home-content").style.marginLeft = "0";
-  }
-</script>
+    /* Hamburger */
+    .hamburger {
+      font-size: 30px;
+      cursor: pointer;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      color: #fff;
+      z-index: 1000;
+    }
+  </style>
 </head>
 <body>
-  <!-- Sidebar Button -->
-  <button class="openbtn" onclick="openNav()">☰ Menu</button>
-
   <!-- Sidebar -->
-  <div id="mySidebar" class="sidebar" onclick="closeNav()">
-    <a href="index.html">Home</a>
-    <a href="calculator.html">Calculator</a>
-    <a href="differentiation.html">Differentiation</a>
-    <a href="integration.html">Integration</a>
-    <a href="steps.html">Step Solver</a>
-    <a href="about.html">About Us</a>
+  <div id="mySidebar" class="sidebar">
+    <a href="index.html">🏠 Home</a>
+    <a href="calculator.html">📟 Calculator</a>
+    <a href="graph.html">📈 Graph Plotter</a>
+    <a href="step-solver.html">🔢 Step Solver</a>
+    <a href="differentiation.html">∂ Differentiation</a>
+    <a href="integration.html">∫ Integration</a>
+    <a href="about.html">ℹ️ About Us</a>
   </div>
 
-  <!-- Content -->
-  <div class="home-content">
+  <!-- Hamburger -->
+  <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+
+  <!-- Main content -->
+  <div class="container">
     <h1>Welcome to MathMagix</h1>
-    <p>Explore the galaxy of mathematics – from simple sums to advanced calculus ✨</p>
+    <h2>Your All-in-One Math Companion ✨</h2>
+
+    <div class="buttons">
+      <a href="calculator.html" class="btn">📟 Calculator</a>
+      <a href="graph.html" class="btn">📈 Graph Plotter</a>
+      <a href="step-solver.html" class="btn">🔢 Step Solver</a>
+      <a href="differentiation.html" class="btn">∂ Differentiation</a>
+      <a href="integration.html" class="btn">∫ Integration</a>
+      <a href="about.html" class="btn">ℹ️ About Us</a>
+    </div>
   </div>
+
+  <!-- Floating math symbols -->
+  <div class="float" style="left:10%;">E=mc²</div>
+  <div class="float" style="left:30%;">∫x² dx</div>
+  <div class="float" style="left:50%;">sin θ</div>
+  <div class="float" style="left:70%;">π≈3.14</div>
+  <div class="float" style="left:85%;">Σn</div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("mySidebar");
+      if (sidebar.style.width === "250px") {
+        sidebar.style.width = "0";
+      } else {
+        sidebar.style.width = "250px";
+      }
+    }
+  </script>
 </body>
 </html>
