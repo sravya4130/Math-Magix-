@@ -5,44 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Differentiation - MathMagix</title>
 
-<!-- Nerdamer for symbolic differentiation -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/nerdamer/1.1.12/nerdamer.core.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/nerdamer/1.1.12/Algebra.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/nerdamer/1.1.12/Calculus.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/nerdamer/1.1.12/Solve.min.js"></script>
+<!-- math.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.12.0/math.min.js"></script>
+<!-- Plotly.js -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    color: white;
-    background: url('https://www.transparenttextures.com/patterns/stardust.png'),
-                radial-gradient(circle at bottom, #0d1b2a, #000000 80%);
-    background-size: cover;
-    background-attachment: fixed;
-  }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+  background: radial-gradient(circle at bottom, #0d1b2a, #000000 80%);
+  background-size: cover;
+  background-attachment: fixed;
+}
+.sidebar { height:100%; width:0; position:fixed; top:0; left:0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); overflow-x:hidden; transition:0.4s; padding-top:60px; z-index:1000; }
+.sidebar a { padding:12px 24px; text-decoration:none; font-size:1.2em; color:#fff; display:block; transition:0.2s; }
+.sidebar a:hover { background: rgba(255,255,255,0.2); }
+.hamburger { font-size:30px; cursor:pointer; position:fixed; top:20px; left:20px; color:#fff; z-index:1001; }
 
-  .sidebar { height:100%; width:0; position:fixed; top:0; left:0; background: rgba(0,0,0,0.7); backdrop-filter:blur(6px); overflow-x:hidden; transition:0.4s; padding-top:60px; z-index:1000; }
-  .sidebar a { padding:12px 24px; text-decoration:none; font-size:1.2em; color:#fff; display:block; transition:0.2s; }
-  .sidebar a:hover { background: rgba(255,255,255,0.2); }
+.container { padding:120px 20px 50px 20px; max-width:900px; margin:0 auto; }
+h1 { text-align:center; font-size:3em; text-shadow: 0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; animation: glow 2s ease-in-out infinite alternate; }
+h2 { text-align:center; font-size:1.5em; margin-top:-10px; text-shadow: 0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; animation: glow-soft 3s ease-in-out infinite alternate; }
+@keyframes glow { from { text-shadow:0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; } to { text-shadow:0 0 20px #66ffff,0 0 40px #66ffff,0 0 60px #66ffff; } }
+@keyframes glow-soft { from { text-shadow:0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; } to { text-shadow:0 0 10px #ff99ff,0 0 20px #ff99ff,0 0 30px #ff99ff; } }
 
-  .hamburger { font-size:30px; cursor:pointer; position:fixed; top:20px; left:20px; color:#fff; z-index:1001; }
-
-  .container { padding:120px 20px 50px 20px; max-width:900px; margin:0 auto; }
-  h1 { text-align:center; font-size:3em; text-shadow:0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; animation: glow 2s ease-in-out infinite alternate; }
-  h2 { text-align:center; font-size:1.5em; margin-top:-10px; text-shadow:0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; animation: glow-soft 3s ease-in-out infinite alternate; }
-  @keyframes glow { from { text-shadow:0 0 10px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff; } to { text-shadow:0 0 20px #66ffff,0 0 40px #66ffff,0 0 60px #66ffff; } }
-  @keyframes glow-soft { from { text-shadow:0 0 6px #ff66ff,0 0 12px #ff66ff,0 0 20px #ff66ff; } to { text-shadow:0 0 10px #ff99ff,0 0 20px #ff99ff,0 0 30px #ff99ff; } }
-
-  .box { background: rgba(255,255,255,0.95); color:#000; border-radius:12px; padding:20px; margin:20px 0; min-height:80px; font-size:1.2em; }
-  input[type="text"] { width:100%; font-size:1.2em; padding:12px; border-radius:8px; border:1px solid #ccc; }
-
-  .btn { background: rgba(0,150,255,0.8); color:white; padding:12px 20px; margin-top:15px; font-size:1.1em; border:none; border-radius:8px; cursor:pointer; margin-right:10px; transition:transform 0.2s, box-shadow 0.2s; }
-  .btn:hover { transform:scale(1.05); box-shadow:0 0 15px #00eaff,0 0 30px #00eaff; }
-
-  .graph-note { margin-top:20px; text-align:center; font-size:1em; color:#fff; }
-  #graph-container { background: rgba(255,255,255,0.95); border-radius:12px; margin-top:20px; padding:10px; min-height:400px; }
-
+.box { background: rgba(255,255,255,0.95); color:#000; border-radius:12px; padding:20px; margin:20px 0; min-height:80px; font-size:1.2em; }
+input[type="text"] { width:100%; font-size:1.2em; padding:12px; border-radius:8px; border:1px solid #ccc; }
+.btn { background: rgba(0,150,255,0.8); color:white; padding:12px 20px; margin-top:15px; font-size:1.1em; border:none; border-radius:8px; cursor:pointer; margin-right:10px; transition:transform 0.2s, box-shadow 0.2s; }
+.btn:hover { transform:scale(1.05); box-shadow:0 0 15px #00eaff,0 0 30px #00eaff; }
+.graph-note { margin-top:20px; text-align:center; font-size:1em; color:#fff; }
+#graph-container { background: rgba(255,255,255,0.95); border-radius:12px; margin-top:20px; padding:10px; min-height:400px; }
 </style>
 </head>
 <body>
@@ -75,50 +68,60 @@
   <div class="graph-note">
     Note: For better accuracy, go to the <a href="graph.html" style="color:#00eaff;">Graph page</a> to analyze functions visually.
   </div>
-  <div id="graph-container">Graph will appear here (placeholder for now)</div>
+  <div id="graph-container">Graph will appear here</div>
 </div>
 
 <script>
-  function toggleSidebar() {
-    const sidebar = document.getElementById("mySidebar");
-    if(sidebar.style.width==="250px"){ sidebar.style.width="0"; }
-    else{ sidebar.style.width="250px"; }
-  }
+function toggleSidebar(){
+  const sidebar = document.getElementById("mySidebar");
+  sidebar.style.width = sidebar.style.width==="250px"?"0":"250px";
+}
 
-  // Preprocess input: replace ², ³ and insert * for implied multiplication
-  function preprocessInput(str){
-    str = str.replace(/²/g, '^2').replace(/³/g, '^3');
-    // Insert * between number and variable (2x -> 2*x)
-    str = str.replace(/(\d)([a-zA-Z])/g,'$1*$2');
-    // Insert * between variable and function (xsin(x) -> x*sin(x))
-    str = str.replace(/([a-zA-Z])(?=sin|cos|tan|log|exp)/g,'$1*');
-    return str;
+function computeDerivative(){
+  const input = document.getElementById("funcInput").value;
+  if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
+  try{
+    const expr = math.parse(input);
+    const derivative = math.derivative(expr,'x').toString();
+    document.getElementById("output").innerHTML = `<b>Derivative:</b> ${derivative}`;
+    plotGraph(derivative);
+  }catch(err){
+    document.getElementById("output").innerText="Invalid function. Please type like x^2 + 2*x + 1";
   }
+}
 
-  function computeDerivative(){
-    const input = document.getElementById("funcInput").value;
-    if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
+function showSteps(){
+  const input = document.getElementById("funcInput").value;
+  if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
+  try{
+    const expr = math.parse(input);
+    const derivative = math.derivative(expr,'x').toString();
+    document.getElementById("output").innerHTML = `<b>Derivative:</b> ${derivative}<br><b>Step-by-Step:</b> Symbolic differentiation applied using math.js`;
+    plotGraph(derivative);
+  }catch(err){
+    document.getElementById("output").innerText="Invalid function. Please type like x^2 + 2*x + 1";
+  }
+}
+
+// Plot derivative graph
+function plotGraph(derivative){
+  const xValues = [];
+  const yValues = [];
+  for(let x=-10; x<=10; x+=0.1){
     try{
-      const func = preprocessInput(input);
-      const deriv = nerdamer(`diff(${func}, x)`).toString();
-      document.getElementById("output").innerHTML = `<b>Derivative:</b> ${deriv}`;
-    }catch(err){
-      document.getElementById("output").innerText="Invalid function. Please check your input.";
+      const scope = {x:x};
+      const y = math.evaluate(derivative,scope);
+      xValues.push(x);
+      yValues.push(y);
+    }catch(e){
+      xValues.push(x);
+      yValues.push(null);
     }
   }
-
-  function showSteps(){
-    const input = document.getElementById("funcInput").value;
-    if(!input){ document.getElementById("output").innerText="Please enter a function!"; return; }
-    try{
-      const func = preprocessInput(input);
-      const deriv = nerdamer(`diff(${func}, x)`).toString();
-      document.getElementById("output").innerHTML = `<b>Derivative:</b> ${deriv}<br><b>Step-by-Step:</b> Symbolic differentiation applied automatically.`;
-    }catch(err){
-      document.getElementById("output").innerText="Invalid function. Please check your input.";
-    }
-  }
+  const trace = { x:xValues, y:yValues, mode:'lines', name:'Derivative' };
+  const layout = { title:'Derivative Graph', plot_bgcolor:'#0d1b2a', paper_bgcolor:'#0d1b2a', font:{color:'#fff'}, xaxis:{title:'x'}, yaxis:{title:"f'(x)"} };
+  Plotly.newPlot('graph-container',[trace],layout,{responsive:true});
+}
 </script>
-
 </body>
 </html>
